@@ -1,0 +1,23 @@
+{
+  "name": "repo-watcher",
+  "version": "0.1.0",
+  "repository": "https://github.com/namhyun-gu/repo-watcher",
+  "author": "Namhyun, Gu <mnhan0403@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@octokit/rest": "^18.0.3",
+    "@types/js-yaml": "^3.12.5",
+    "@types/nodemailer": "^6.4.0",
+    "dotenv": "^8.2.0",
+    "js-yaml": "^3.14.0",
+    "moment": "^2.27.0",
+    "nodemailer": "^6.4.10"
+  },
+  "devDependencies": {
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  }
+}
