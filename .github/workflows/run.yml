@@ -21,4 +21,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm install
-      - run: npm start
+      - name: Run watcher
+        run: npm start
+        env:
+          GIST_ID: ${{ secrets.GIST_ID }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PW: ${{ secrets.SMTP_PW }}
