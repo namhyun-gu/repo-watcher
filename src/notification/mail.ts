@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import moment from "moment";
+import pug from "pug";
+import * as path from "path";
 
 import { Notification, Repository, NotificationArgument } from "../interfaces";
 import Utils from "../utils";
@@ -49,7 +51,7 @@ export class MailNotification extends Notification<MailNotificationArgument> {
     });
 
     const subject = `${locale(lang).subject} (${moment().format("MMM Do")})`;
-    const content = repos.map((repo) => Utils.toHtml(lang, repo)).join("");
+    const content = this.buildContent(lang, repos);
 
     const options = <Mail.Options>{
       from: senderMail,
@@ -59,5 +61,19 @@ export class MailNotification extends Notification<MailNotificationArgument> {
     };
 
     await transporter.sendMail(options);
+  }
+
+  buildContent(lang: string, repos: Repository[]): string {
+    if (repos.length) {
+      return pug.renderFile(path.join(__dirname, "template/mail.pug"), {
+        repos,
+        msg: {
+          title: locale(lang).subject,
+          noCommits: locale(lang).msg_no_commits,
+        },
+      });
+    } else {
+      return "";
+    }
   }
 }

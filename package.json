@@ -15,10 +15,12 @@
     "@octokit/rest": "^18.0.3",
     "@types/js-yaml": "^3.12.5",
     "@types/nodemailer": "^6.4.0",
+    "@types/pug": "^2.0.4",
     "dotenv": "^8.2.0",
     "js-yaml": "^3.14.0",
     "moment": "^2.27.0",
-    "nodemailer": "^6.4.10"
+    "nodemailer": "^6.4.10",
+    "pug": "^3.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
