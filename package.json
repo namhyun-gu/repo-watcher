@@ -5,7 +5,10 @@
   "author": "Namhyun, Gu <mnhan0403@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "npm run build && node dist/index.js",
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline --copy-files"
   },
   "dependencies": {
     "@octokit/rest": "^18.0.3",
@@ -17,6 +20,14 @@
     "nodemailer": "^6.4.10"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
+    "@babel/runtime": "^7.11.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   }
