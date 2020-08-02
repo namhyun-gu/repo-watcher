@@ -1,8 +1,8 @@
 import { config } from "dotenv";
 import moment from "moment";
 
-import { GithubService } from "./services";
-import { Notification, Repository, Commit } from "./interfaces";
+import { GithubServiceImpl } from "./services";
+import { Notification, Repository, GithubService } from "./interfaces";
 import { MailNotification } from "./notification/mail";
 import Utils from "./utils";
 
@@ -15,11 +15,11 @@ const {
 } = process.env;
 
 async function main() {
-  const github = new GithubService();
+  const github = new GithubServiceImpl();
   const watcher = new RepoWatcher(github);
 
   const gist = await github.getGist(gistId!);
-  const config = Utils.loadConfig(gist?.content!);
+  const config = Utils.loadConfig(gist.files[0].content!);
 
   const lang = config.lang;
   moment.locale(lang);
@@ -77,18 +77,7 @@ class RepoWatcher {
     await Promise.all(
       repos.map(async (repo) => {
         const commits = await this.github.listCommits(repo.owner, repo.name);
-        repo.commits = commits?.map((it) => {
-          const data = it.commit;
-          const author = data.author;
-          const committer = data.committer;
-
-          return <Commit>{
-            author,
-            committer,
-            message: data.message,
-            url: it.html_url,
-          };
-        });
+        repo.commits = commits;
       })
     );
     this.repos = repos;

@@ -1,38 +1,46 @@
 import { Octokit } from "@octokit/rest";
 import moment from "moment";
 
-export class GithubService {
+import { Commit, GithubService, Gist, GistFile } from "./interfaces";
+
+export class GithubServiceImpl implements GithubService {
   private octokit = new Octokit();
 
-  async getGist(gistId: string) {
-    try {
-      if (gistId) {
-        const gist = await this.octokit.gists.get({
-          gist_id: gistId,
-        });
+  async getGist(gistId: string): Promise<Gist> {
+    const gist = await this.octokit.gists.get({
+      gist_id: gistId,
+    });
 
-        const filename = Object.keys(gist.data.files)[0];
-        return gist.data.files[filename];
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error(`Unable to get gist\n${error}`);
-      return null;
-    }
+    return <Gist>{
+      files: Object.keys(gist.data.files).map(
+        (filename) =>
+          <GistFile>{
+            filename,
+            content: gist.data.files[filename].content,
+          }
+      ),
+    };
   }
 
-  async listCommits(owner: string, repo: string) {
-    try {
-      const commits = await this.octokit.repos.listCommits({
-        owner,
-        repo,
-        since: moment().subtract(1, "days").toISOString(),
-      });
-      return commits.data;
-    } catch (error) {
-      console.error(`Unable to get commits\n${error}`);
-      return null;
-    }
+  async listCommits(owner: string, repo: string): Promise<Commit[]> {
+    const yesterdayDate = moment().subtract(1, "days").toISOString();
+    const commits = await this.octokit.repos.listCommits({
+      owner,
+      repo,
+      since: yesterdayDate,
+    });
+
+    return commits.data.map((it) => {
+      const commit = it.commit;
+      const author = commit.author;
+      const committer = commit.committer;
+
+      return <Commit>{
+        author,
+        committer,
+        message: commit.message,
+        url: it.html_url,
+      };
+    });
   }
 }

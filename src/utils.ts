@@ -10,8 +10,13 @@ export default class Utils {
 
   static toRepository(target: string): Repository | undefined {
     const [owner, name] = target.split("/");
-    if (owner && name) return { owner, name, commits: undefined };
-    else return undefined;
+    if (owner && name) {
+      return <Repository>{
+        owner,
+        name,
+      };
+    }
+    return undefined;
   }
 
   static toHtml(lang: string, repo: Repository): string {

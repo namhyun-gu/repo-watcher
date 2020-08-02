@@ -17,6 +17,21 @@ export interface Commit {
   url: string;
 }
 
+export interface Gist {
+  files: GistFile[];
+}
+
+export interface GistFile {
+  filename: string;
+  content: string | undefined;
+}
+
+export interface GithubService {
+  getGist(gistId: string): Promise<Gist | undefined>;
+
+  listCommits(owner: string, repo: string): Promise<Commit[]>;
+}
+
 export abstract class Notification<T extends NotificationArgument<any, any>> {
   arg: T;
 
