@@ -1,0 +1,3 @@
+*.css linguist-vendored
+*.pug linguist-vendored
+jest.config.js linguist-vendored
