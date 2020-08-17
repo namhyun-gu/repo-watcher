@@ -87,7 +87,7 @@ center
                             tr
                               td.mcnTextContent(valign='top' style='padding: 0px 18px 9px; font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif; line-height: 125%;')
                                 | -&nbsp;
-                                a(href='repo_url') #{repo.owner}/#{repo.name} (0)
+                                a(href='http://github.com/' + repo.owner + '/' + repo.name) #{repo.owner}/#{repo.name} (#{repo.commits.length})
                         //if mso
                         //if mso
                 if repo.commits.length
