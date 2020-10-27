@@ -23,7 +23,12 @@ export class GithubServiceImpl implements GithubService {
   }
 
   async listCommits(owner: string, repo: string): Promise<Commit[]> {
-    const yesterdayDate = moment().subtract(1, "days").toISOString();
+    const yesterdayDate = moment()
+      .subtract(1, "days")
+      .minutes(0)
+      .seconds(0)
+      .toISOString();
+
     const commits = await this.octokit.repos.listCommits({
       owner,
       repo,
